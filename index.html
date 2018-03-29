@@ -22,39 +22,45 @@
 
     const path = require('path')
     const url = require('url')
+    const os = require('os')
 
     let win;
 
     function openFilter() {
-      win = new BrowserWindow({
-        width: 800,
-        height: 600,
-        transparent: true,
-        frame: false,
-        alwaysOnTop: true,
-        skipTaskbar: true,
-        enableLargerThanScreen: true,
-        thickFrame: false
-      })
+      if (os.platform() == 'win32') {
+        win = new BrowserWindow({
+          width: 800,
+          height: 600,
+          transparent: true,
+          frame: false,
+          alwaysOnTop: true,
+          skipTaskbar: true,
+          enableLargerThanScreen: true,
+          thickFrame: false
+        })
 
-      win.loadURL(url.format({
-        pathname: path.join(__dirname, 'hide.html'),
-        protocol: 'file:',
-        slashes: true
-      }))
+        win.loadURL(url.format({
+          pathname: path.join(__dirname, 'hide.html'),
+          protocol: 'file:',
+          slashes: true
+        }))
 
-      var allScreens = screen.getAllDisplays();
+        var allScreens = screen.getAllDisplays();
 
-      win.setSize(allScreens[0].bounds.width + 100, allScreens[0].bounds.height + 100)
-      win.setResizable(false)
-      win.setPosition(-50, -50)
+        win.setSize(allScreens[0].bounds.width + 100, allScreens[0].bounds.height + 100)
+        win.setResizable(false)
+        win.setPosition(-50, -50)
 
-      app.focus()
-      win.focus()
+        app.focus()
+        win.focus()
+      }
     }
 
     function closeFilter() {
-      win.close();
+      if (os.platform() == 'win32')
+      {
+        win.close();
+      }
     }
   </script>
 </body>
