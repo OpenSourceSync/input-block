@@ -1,22 +1,62 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>Transparent Window</title>
-        <style type="text/css">
-          body {
-            cursor: none;
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            right: 0;
-          }
-        </style>
-    </head>
-    <body>
-        <div>
 
-        </div>
-    </body>
+<head>
+  <meta charset="UTF-8">
+  <title>Hello World!</title>
+</head>
+
+<body>
+  <button onclick="openFilter()">Open</button>
+  <button onclick="closeFilter()">Close</button>
+  <script>
+    const app = require('electron').remote.app;
+
+    const {
+      BrowserWindow
+    } = require('electron').remote
+
+    const {
+      screen
+    } = require('electron').remote
+
+    const path = require('path')
+    const url = require('url')
+
+    let win;
+
+    function openFilter() {
+      win = new BrowserWindow({
+        width: 800,
+        height: 600,
+        transparent: true,
+        frame: false,
+        alwaysOnTop: true,
+        skipTaskbar: true,
+        enableLargerThanScreen: true,
+        thickFrame: false
+      })
+
+      win.loadURL(url.format({
+        pathname: path.join(__dirname, 'hide.html'),
+        protocol: 'file:',
+        slashes: true
+      }))
+
+      var allScreens = screen.getAllDisplays();
+
+      win.setSize(allScreens[0].bounds.width + 100, allScreens[0].bounds.height + 100)
+      win.setResizable(false)
+      win.setPosition(-50, -50)
+
+      app.focus()
+      win.focus()
+    }
+
+    function closeFilter() {
+      win.close();
+    }
+  </script>
+</body>
+
 </html>

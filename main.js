@@ -13,16 +13,7 @@ let mainWindow
 
 function createWindow () {
   // Create the browser window.
-  mainWindow = new BrowserWindow({
-		width: 800,
-		height: 600,
-		transparent: true,
-		frame: false,
-		alwaysOnTop: true,
-		skipTaskbar: true,
-		enableLargerThanScreen: true,
-		thickFrame: false
-	})
+  mainWindow = new BrowserWindow({width: 800, height: 600})
 
   // and load the index.html of the app.
   mainWindow.loadURL(url.format({
@@ -36,34 +27,17 @@ function createWindow () {
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
-  // Dereference the window object, usually you would store windows
-  // in an array if your app supports multi windows, this is the time
-  // when you should delete the corresponding element.
-  // mainWindow = null
+    // Dereference the window object, usually you would store windows
+    // in an array if your app supports multi windows, this is the time
+    // when you should delete the corresponding element.
+    mainWindow = null
   })
 }
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', function () {
-	createWindow();
-	mainWindow.maximize();
-
-	var screenElectron = electron.screen;
-	var allScreens = screenElectron.getAllDisplays();
-	// mainWindow.setFullScreen(true);
-	mainWindow.setSize(allScreens[0].bounds.width + 100, allScreens[0].bounds.height + 100)
-	// mainWindow.center()
-	mainWindow.setResizable(false)
-	mainWindow.setPosition(-50, -50)
-
-	app.focus();
-
-	// console.log(mainWindow.getSize())
-	// console.log(mainWindow.getPosition())
-	// console.log(allScreens[0].bounds.width)
-})
+app.on('ready', createWindow)
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function () {
@@ -80,11 +54,6 @@ app.on('activate', function () {
   if (mainWindow === null) {
     createWindow()
   }
-})
-
-app.on('browser-window-blur', function () {
-	console.log('Lost focus')
-	mainWindow.focus()
 })
 
 // In this file you can include the rest of your app's specific main process
